@@ -22,10 +22,10 @@ install:
 #   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test:
-	cd tests/site
-	cp ../../config.yml .
-	cp -Rp ../../template/* .
-        make
+	cd tests/site && \
+	cp ../../config.yml . && \
+	cp -Rp ../../template/* . && \
+	make
 
 publish:
 	upsection package.json
