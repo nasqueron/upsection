@@ -34,7 +34,7 @@ def build_package():
         **get_package_config()
     }
 
-    return json.dumps(package)
+    return json.dumps(package, sort_keys=False, indent=4) + "\n"
 
 
 def get_package_config():

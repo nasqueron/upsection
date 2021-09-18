@@ -80,6 +80,8 @@ How to upgrade dependencies in upsection repository?
 ----------------------------------------------------
 
 For the Node dependencies, edit `components/package-template.json`.
+Then run `make publish` to update the repository reference package.
+That last step allows to expose dependencies to security trackers.
 
 When a new Foundation version is released, changes to templates/assets/
 are expected.
