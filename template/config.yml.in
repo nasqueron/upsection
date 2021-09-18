@@ -1,0 +1,63 @@
+#   -------------------------------------------------------------
+#   Static website configuration
+#   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#   Project:        Nasqueron
+#   Site:           https://%%SUBDOMAIN%%.nasqueron.org
+#   -------------------------------------------------------------
+
+#   -------------------------------------------------------------
+#   Metadata to generate package.json
+#   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+package:
+  name: nasqueron-%%SUBDOMAIN%%-www
+  version: 0.1.0
+  description: Build %%SUBDOMAIN%% site
+
+  repository_name: %%SUBDOMAIN%%-www
+
+#   -------------------------------------------------------------
+#   Configuration for Gulp build tasks
+#   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+paths:
+  dist: "dist"
+
+  # Paths to static assets that aren't images, CSS, or JavaScript
+  assets:
+    - "src/assets/**/*"
+    - "!src/assets/{img,js,scss}{,/**/*}"
+
+  # Paths to Sass libraries, which can then be loaded with @import
+  sass:
+    - "node_modules/foundation-sites/scss"
+    - "node_modules/motion-ui/src"
+
+  # Paths to JavaScript entry points for webpack to bundle modules
+  entries:
+    - "src/assets/js/app.js"
+
+tasks:
+
+  # Make sure CSS is compatible with browsers guards prefixes like -moz-
+  autoprefixer:
+    browsers:
+      - last 2 versions
+      - ie >= 9
+      - ios >= 12
+      - android >= 7.0
+
+  # Remove unused CSS declarations
+  uncss:
+    html:
+      - "src/**/*.html"
+    ignore:
+      - "!!js/regexp .foundation-mq"
+      - '!!js/regexp ^\.is-.*'
+
+#   -------------------------------------------------------------
+#   Configuration for development server
+#   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+dev:
+  port: 8000
