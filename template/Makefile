@@ -6,7 +6,7 @@ SOURCE=/usr/local/share/upsection
 #   Main targets
 #   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-ALL_TARGETS=package.json .browserslistrc gulpfile.babel.js node_modules
+ALL_TARGETS=package.json .babelrc .browserslistrc gulpfile.babel.js node_modules
 CLEAN_TARGETS=dist/ ${ALL_TARGETS}
 
 all: ${ALL_TARGETS}
@@ -30,6 +30,9 @@ package.json:
 
 node_modules: package.json
 	npm install
+
+.babelrc:
+	${CP} ${SOURCE}/babelrc .babelrc
 
 gulpfile.babel.js:
 	${CP} ${SOURCE}/gulpfile.js gulpfile.babel.js
