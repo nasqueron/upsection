@@ -14,6 +14,8 @@ import named         from 'vinyl-named';
 import uncss         from 'uncss';
 import autoprefixer  from 'autoprefixer';
 
+var sass = require('gulp-sass')(require('sass'));
+
 // Load all Gulp plugins into one variable
 const $ = plugins();
 
@@ -31,7 +33,7 @@ function loadConfig() {
 // Build the "dist" folder by running all of the below tasks
 // Sass must be run later so UnCSS can search for used classes in the others assets.
 gulp.task('build',
-    gulp.series(clean, gulp.parallel(pages, javascript, images, copy), sass));
+    gulp.series(clean, gulp.parallel(pages, javascript, images, copy), compileSass));
 
 // Build the site, run the server, and watch for file changes
 gulp.task('default',
@@ -46,7 +48,7 @@ function clean(done) {
 // Copy files out of the assets folder
 // This task skips over the "img", "js", and "scss" folders, which are parsed separately
 function copy() {
-    return gulp.src(build_paths.assets)
+    return gulp.src(config.paths.assets)
         .pipe(gulp.dest(config.paths.dist + '/assets'));
 }
 
@@ -71,7 +73,7 @@ function resetPages(done) {
 
 // Compile Sass into CSS
 // In production, the CSS is compressed
-function sass() {
+function compileSass() {
 
     const postCssPlugins = [
         autoprefixer(),
@@ -80,10 +82,10 @@ function sass() {
 
     return gulp.src('src/assets/scss/app.scss')
         .pipe($.sourcemaps.init())
-        .pipe($.sass({
+        .pipe(sass({
             includePaths: config.paths.sass
         })
-            .on('error', $.sass.logError))
+            .on('error', sass.logError))
         .pipe($.postcss(postCssPlugins))
         .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
         .pipe($.if(!PRODUCTION, $.sourcemaps.write()))
@@ -129,7 +131,9 @@ function javascript() {
 function images() {
     return gulp.src('src/assets/img/**/*')
         .pipe($.if(PRODUCTION, $.imagemin([
-            $.imagemin.jpegtran({ progressive: true }),
+            $.imagemin.gifsicle({interlaced: true}),
+            $.imagemin.mozjpeg({quality: 80, progressive: true}),
+            $.imagemin.optipng({optimizationLevel: 7}),
         ])))
         .pipe(gulp.dest(config.paths.dist + '/assets/img'));
 }
@@ -154,7 +158,7 @@ function watch() {
     gulp.watch('src/{layouts,partials}/**/*.html').on('all', gulp.series(resetPages, pages, browser.reload));
     gulp.watch('src/data/**/*.{js,json,yml}').on('all', gulp.series(resetPages, pages, browser.reload));
     gulp.watch('src/helpers/**/*.js').on('all', gulp.series(resetPages, pages, browser.reload));
-    gulp.watch('src/assets/scss/**/*.scss').on('all', sass);
+    gulp.watch('src/assets/scss/**/*.scss').on('all', compileSass);
     gulp.watch('src/assets/js/**/*.js').on('all', gulp.series(javascript, browser.reload));
     gulp.watch('src/assets/img/**/*').on('all', gulp.series(images, browser.reload));
 }

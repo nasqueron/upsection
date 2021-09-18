@@ -7,8 +7,8 @@
   "dependencies": {
     "foundation-sites": "~6.4.1",
     "jquery": ">=3.0.0",
-    "what-input": "^4.1.3",
-    "motion-ui": "^2.0.3"
+    "motion-ui": "^2.0.3",
+    "what-input": "^4.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -24,21 +24,22 @@
     "gulp-concat": "^2.5.2",
     "gulp-extname": "^0.2.0",
     "gulp-if": "^2.0.0",
-    "gulp-imagemin": "^4.1.0",
+    "gulp-imagemin": "^7.1.0",
     "gulp-load-plugins": "^1.1.0",
     "gulp-postcss": "^8.0.0",
-    "gulp-sass": "^4.0.1",
+    "gulp-sass": "^5.0.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
     "js-yaml": "^3.4.6",
     "panini": "^1.3.0",
     "rimraf": "^2.4.3",
+    "sass":  "^1.41.1",
     "style-sherpa": "^1.0.0",
     "uncss": "^0.16.2",
     "vinyl-named": "^1.1.0",
-    "webpack": "^4.20.2",
-    "webpack-stream": "^5.1.1",
-    "yargs": "^12.0.2"
+    "webpack": "^5.53.0",
+    "webpack-stream": "^7.0.0",
+    "yargs": "^17.1.1"
   },
   "bugs": {
     "url": "https://devcentral.nasqueron.org/"
