@@ -31,17 +31,17 @@ def build_package():
 
     package = {
         **package_template,
-        **get_package_config()
+        **get_package_config(),
     }
 
     return json.dumps(package, sort_keys=False, indent=4) + "\n"
 
 
 def get_package_config():
-    package_metadata = app['config']['package']
+    package_metadata = app["config"]["package"]
 
-    repository = get_repository(package_metadata['repository_name'])
-    del package_metadata['repository_name']
+    repository = get_repository(package_metadata["repository_name"])
+    del package_metadata["repository_name"]
 
     return {
         **package_metadata,
@@ -59,13 +59,13 @@ def build_browserslistrc():
 
 
 def get_browsers_list():
-    return "\n".join(app['config']['tasks']['autoprefixer']['browsers'])
+    return "\n".join(app["config"]["tasks"]["autoprefixer"]["browsers"])
 
 
 def get_repository(name):
     return {
         "type": "git",
-        "url": "https://devcentral.nasqueron.org/source/" + name + ".git"
+        "url": "https://devcentral.nasqueron.org/source/" + name + ".git",
     }
 
 
@@ -75,12 +75,12 @@ def get_repository(name):
 
 
 def initialize_app():
-    with open('config.yml') as fd:
+    with open("config.yml") as fd:
         config = yaml.safe_load(fd)
 
     return {
-        'config': config,
-        'builders': get_builders(),
+        "config": config,
+        "builders": get_builders(),
     }
 
 
@@ -93,8 +93,8 @@ def run(args):
 
 
 def build_all():
-    for file_to_build, builder in app['builders'].items():
-        with open(file_to_build, 'w') as fd:
+    for file_to_build, builder in app["builders"].items():
+        with open(file_to_build, "w") as fd:
             fd.write(builder())
 
 
@@ -105,12 +105,12 @@ def build_some(files_to_build):
 
 def build(file_to_build):
     try:
-        content = app['builders'][file_to_build]()
+        content = app["builders"][file_to_build]()
     except KeyError:
         print("Don't know how to generate", file_to_build, file=sys.stderr)
         return
 
-    with open(file_to_build, 'w') as fd:
+    with open(file_to_build, "w") as fd:
         fd.write(content)
 
 
