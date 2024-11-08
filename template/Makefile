@@ -1,6 +1,7 @@
 CP=cp
 RM=rm -rf
 SOURCE=/usr/local/share/upsection
+UPSECTION ?= upsection
 
 #   -------------------------------------------------------------
 #   Main targets
@@ -23,10 +24,10 @@ clean:
 #   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 package.json:
-	upsection package.json
+	${UPSECTION} package.json
 
 .browserslistrc:
-	upsection .browserslistrc
+	${UPSECTION} .browserslistrc
 
 node_modules: package.json
 	npm install

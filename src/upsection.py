@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import os
 import sys
 import yaml
 
@@ -10,7 +11,14 @@ import yaml
 #   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
-PACKAGE_TEMPLATE = "/usr/local/share/upsection/package-template.json"
+DEFAULT_PACKAGE_TEMPLATE_PATH = "/usr/local/share/upsection/package-template.json"
+
+
+def get_package_template_path():
+    try:
+        return os.environ["PACKAGE_TEMPLATE"]
+    except KeyError:
+        return DEFAULT_PACKAGE_TEMPLATE_PATH
 
 
 def get_builders():
@@ -26,7 +34,7 @@ def get_builders():
 
 
 def build_package():
-    with open(PACKAGE_TEMPLATE) as fd:
+    with open(get_package_template_path()) as fd:
         package_template = json.load(fd)
 
     package = {

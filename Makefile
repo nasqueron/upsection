@@ -25,7 +25,7 @@ test:
 	cd tests/site && \
 	cp ../../config.yml . && \
 	cp -Rp ../../template/* . && \
-	make
+	PACKAGE_TEMPLATE=../../components/package-template.json UPSECTION=../../src/upsection.py make
 
 publish:
 	upsection package.json
