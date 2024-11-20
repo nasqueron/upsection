@@ -28,4 +28,4 @@ test:
 	PACKAGE_TEMPLATE=../../components/package-template.json UPSECTION=../../src/upsection.py make
 
 publish:
-	upsection package.json
+	PACKAGE_TEMPLATE=components/package-template.json upsection package.json
