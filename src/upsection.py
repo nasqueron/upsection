@@ -83,8 +83,15 @@ def get_repository(name):
 
 
 def initialize_app():
-    with open("config.yml") as fd:
-        config = yaml.safe_load(fd)
+    try:
+        with open("config.yml") as fd:
+            config = yaml.safe_load(fd)
+    except FileNotFoundError as e:
+        print(f"Error: {str(e)}", file=sys.stderr)
+        print(
+            "Please consult the documentation : https://agora.nasqueron.org/Upsection"
+        )
+        sys.exit(1)
 
     return {
         "config": config,
