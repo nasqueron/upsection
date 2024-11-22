@@ -5,7 +5,7 @@ import yargs         from 'yargs';
 import browser       from 'browser-sync';
 import gulp          from 'gulp';
 import panini        from 'panini';
-import rimraf        from 'rimraf';
+import { rimraf }    from 'rimraf';
 import yaml          from 'js-yaml';
 import fs            from 'fs';
 import webpackStream from 'webpack-stream';
@@ -13,8 +13,12 @@ import webpack2      from 'webpack';
 import named         from 'vinyl-named';
 import uncss         from 'uncss';
 import autoprefixer  from 'autoprefixer';
+import imagemin      from 'gulp-imagemin';
+import { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
 
-var sass = require('gulp-sass')(require('sass'));
+import * as dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+const sass = gulpSass(dartSass);
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -26,8 +30,10 @@ const PRODUCTION = !!(yargs.argv.production);
 const config = loadConfig();
 
 function loadConfig() {
+    const unsafe = require('js-yaml-js-types').all;
+    const schema = yaml.DEFAULT_SCHEMA.extend(unsafe);
     let ymlFile = fs.readFileSync('config.yml', 'utf8');
-    return yaml.load(ymlFile);
+    return yaml.load(ymlFile, { schema });
 }
 
 // Build the "dist" folder by running all of the below tasks
@@ -42,7 +48,8 @@ gulp.task('default',
 // Delete the "dist" folder
 // This happens every time a build starts
 function clean(done) {
-    rimraf(config.paths.dist, done);
+    rimraf.rimrafSync(config.paths.dist);
+    done();
 }
 
 // Copy files out of the assets folder
@@ -130,10 +137,16 @@ function javascript() {
 // In production, the images are compressed
 function images() {
     return gulp.src('src/assets/img/**/*')
-        .pipe($.if(PRODUCTION, $.imagemin([
-            $.imagemin.gifsicle({interlaced: true}),
-            $.imagemin.mozjpeg({quality: 80, progressive: true}),
-            $.imagemin.optipng({optimizationLevel: 7}),
+        .pipe($.if(PRODUCTION, imagemin([
+            gifsicle({interlaced: true}),
+            mozjpeg({quality: 85, progressive: true}),
+            optipng({optimizationLevel: 5}),
+            svgo({
+                plugins: [
+                    {removeViewBox: true},
+                    {cleanupIDs: false}
+       	        ]
+            })
         ])))
         .pipe(gulp.dest(config.paths.dist + '/assets/img'));
 }
