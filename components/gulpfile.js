@@ -145,7 +145,7 @@ function images() {
                 plugins: [
                     {removeViewBox: true},
                     {cleanupIDs: false}
-       	        ]
+                ]
             })
         ])))
         .pipe(gulp.dest(config.paths.dist + '/assets/img'));
