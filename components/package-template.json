@@ -32,6 +32,7 @@
         "gulp-uglify": "^3.0.2",
         "js-yaml": "^4.1.0",
         "js-yaml-js-types": "^1.0.1",
+        "localtunnel":"^2.0.2",
         "panini": "^1.7.2",
         "postcss": "^8.4.49",
         "rimraf": "^6.0.1",

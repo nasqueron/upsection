@@ -61,3 +61,6 @@ tasks:
 
 dev:
   port: 8000
+  tunnel:
+    enabled: true
+    subdomain: %%SUBDOMAIN%%

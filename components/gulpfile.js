@@ -15,10 +15,11 @@ import uncss         from 'uncss';
 import autoprefixer  from 'autoprefixer';
 import imagemin      from 'gulp-imagemin';
 import { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
-
 import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
+
 const sass = gulpSass(dartSass);
+const localtunnel = require('localtunnel');
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -151,11 +152,20 @@ function images() {
         .pipe(gulp.dest(config.paths.dist + '/assets/img'));
 }
 
-// Start a server with BrowserSync to preview the site in
+// Start a server with BrowserSync to preview the site
 function server(done) {
     browser.init({
-        server: config.paths.dist, port: config.dev.port
-    }, done);
+        server: config.paths.dist,
+        port: config.dev.port,
+    });
+
+    if (tunnel in config.dev && config.dev.tunnel.enabled) {
+        setupTunnel().then(() => {
+            done();
+        });
+    } else {
+        done();
+    }
 }
 
 // Reload the browser with BrowserSync
@@ -174,4 +184,24 @@ function watch() {
     gulp.watch('src/assets/scss/**/*.scss').on('all', compileSass);
     gulp.watch('src/assets/js/**/*.js').on('all', gulp.series(javascript, browser.reload));
     gulp.watch('src/assets/img/**/*').on('all', gulp.series(images, browser.reload));
+}
+
+async function setupTunnel() {
+    try {
+        const tunnelOptions = { port: config.dev.port };
+
+        if (subdomain in config.dev.tunnel) {
+            tunnelOptions.subdomain = config.dev.tunnel.subdomain;
+        }
+        const tunnel = await localtunnel(tunnelOptions);
+
+        console.log('Tunnel URL:', tunnel.url);
+
+        tunnel.on('close', () => {
+            console.log('Localtunnel closed');
+        });
+    } catch (err) {
+        console.error('Localtunnel setup failed:', err);
+        throw err;
+    }
 }
