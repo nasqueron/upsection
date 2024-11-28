@@ -1,25 +1,25 @@
 'use strict';
 
-import plugins       from 'gulp-load-plugins';
-import yargs         from 'yargs';
+import autoprefixer  from 'autoprefixer';
 import browser       from 'browser-sync';
+import fs            from 'fs';
 import gulp          from 'gulp';
+import gulpSass      from 'gulp-sass';
+import { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
+import plugins       from 'gulp-load-plugins';
+import gulpSass      from 'gulp-sass';
+import yaml          from 'js-yaml';
 import panini        from 'panini';
 import { rimraf }    from 'rimraf';
-import yaml          from 'js-yaml';
-import fs            from 'fs';
-import webpackStream from 'webpack-stream';
-import webpack2      from 'webpack';
-import named         from 'vinyl-named';
-import uncss         from 'uncss';
-import autoprefixer  from 'autoprefixer';
-import imagemin      from 'gulp-imagemin';
-import { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
 import * as dartSass from 'sass';
-import gulpSass from 'gulp-sass';
+import uncss         from 'uncss';
+import named         from 'vinyl-named';
+import webpack2      from 'webpack';
+import webpackStream from 'webpack-stream';
+import yargs         from 'yargs';
 
-const sass = gulpSass(dartSass);
 const localtunnel = require('localtunnel');
+const sass = gulpSass(dartSass);
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
